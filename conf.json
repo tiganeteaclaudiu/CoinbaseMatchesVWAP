@@ -1,0 +1,6 @@
+{
+    "TRADE_PAIRS": ["BTC-USD", "ETH-USD", "ETH-BTC"],
+    "SOCKET_ADDRESS": "ws-feed.exchange.coinbase.com",
+    "CLEAR_CONSOLE": true,
+    "WINDOW": 200
+}
