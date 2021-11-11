@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 // Aggregator - aggregates trade data for multiple trade pairs
@@ -30,24 +31,24 @@ func NewAggregator(config model.Config) *Aggregator {
 
 // ToString - prints formatted aggregated trade data to output
 func (ag *Aggregator) ToString() string {
-	if ag == nil {
-		return ""
+	var pairs []string
+
+	// output VWAP for all trading pairs in aggregator
+	for _, pair := range ag.tradingPairs {
+		pairs = append(pairs, ag.Utils[pair].ToString())
 	}
-	return ag.toString()
+
+	return strings.Join(pairs, "\n")
 }
 
-func (ag *Aggregator) toString() string {
-	// clears console if configured so
+// ToOutput - prints formatted aggregated trade data to output
+func (ag *Aggregator) ToOutput() {
+	// clears console before printing if configured so
 	if ag.config.ClearConsole == true {
 		cmd := exec.Command("cmd", "/c", "cls")
 		cmd.Stdout = os.Stdout
 		cmd.Run()
 	}
 
-	// output VWAP for all trading pairs in aggregator
-	for _, pair := range ag.tradingPairs {
-		fmt.Println(ag.Utils[pair].ToString())
-	}
-
-	return ""
+	fmt.Println(ag.ToString())
 }

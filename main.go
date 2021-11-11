@@ -6,6 +6,7 @@ import (
 	"assignment/utils"
 	"assignment/websocketClient"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
 	"log"
@@ -29,18 +30,34 @@ func loadConfig() (model.Config, error) {
 	return configuration, nil
 }
 
-func timeExecution(start time.Time) {
-	fmt.Println("Execution time: ", time.Since(start))
+// validateConfig validates a configuration
+func validateConfig(config model.Config) error {
+	if len(config.TradePairs) == 0 {
+		return errors.New("No TRADE_PAIRS in configuration")
+	}
+	if config.SocketAddress == "" {
+		return errors.New("No SOCKET_ADDRESS in configuration")
+	}
+	if config.Window == 0 {
+		return errors.New("No WINDOW in configuration")
+	}
+	return nil
 }
 
 func main() {
-	defer timeExecution(time.Now())
 	// load configuration
 	config, err := loadConfig()
 	if err != nil {
 		fmt.Println(fmt.Sprintf("Failed to load configuration. err: %v", err))
 		return
 	}
+
+	err = validateConfig(config)
+	if err != nil {
+		fmt.Println(fmt.Sprintf("Configuration invalid: %v", err))
+		return
+	}
+
 	socketAddr := flag.String("addr", config.SocketAddress, "http service address")
 	if socketAddr == nil {
 		fmt.Println(fmt.Sprintf("Websocket address not configured. err: %v", err))
@@ -74,7 +91,7 @@ func main() {
 	client.Read(read)
 
 	// start reading from channel
-	go startRead(read, aggregator)
+	go startRead(read, aggregator, done)
 
 	// listen for shutdown events (keyboard interrupt or done)
 	for {
@@ -96,7 +113,8 @@ func main() {
 }
 
 // startRead - starts reading from input channel, outputs data to aggregator
-func startRead(read chan []byte, aggregator *utils.Aggregator) {
+func startRead(read chan []byte, aggregator *utils.Aggregator, done chan struct{}) {
+	defer close(done)
 	var err error
 	for {
 		select {
@@ -104,7 +122,6 @@ func startRead(read chan []byte, aggregator *utils.Aggregator) {
 			var dataPoint model.DataPoint
 			err = json.Unmarshal(message, &dataPoint)
 			if err != nil {
-				fmt.Println(err)
 				return
 			}
 
@@ -113,7 +130,7 @@ func startRead(read chan []byte, aggregator *utils.Aggregator) {
 				continue
 			}
 
-			// parse price and volume of tranzaction (size)
+			// parse price and volume of transaction (size)
 			price, err := strconv.ParseFloat(dataPoint.Price, 64)
 			if err != nil {
 				fmt.Println(err)
@@ -124,10 +141,11 @@ func startRead(read chan []byte, aggregator *utils.Aggregator) {
 				fmt.Println(err)
 				return
 			}
+
 			// add data point to VWAP util based on Trading Pair in message (Product ID)
 			aggregator.Utils[dataPoint.ProductID].Add(price, size)
 			// output all Trading Pairs data using aggregator
-			fmt.Println(aggregator.ToString())
+			aggregator.ToOutput()
 		}
 	}
 }

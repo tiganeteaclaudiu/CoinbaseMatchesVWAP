@@ -54,7 +54,6 @@ func (cl *socketClient) subscribeToMatches(retries int, subscriptionMessage stri
 	}
 	ticker := time.NewTicker(time.Second)
 	defer ticker.Stop()
-
 	err := cl.conn.WriteMessage(websocket.TextMessage, []byte(subscriptionMessage))
 	if err != nil {
 		log.Println("failed to write:", err)

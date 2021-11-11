@@ -27,7 +27,7 @@ type VWAPUtil struct {
 	window int
 }
 
-// NewVWAPUtil initializes a new VWAPUtil for a traiding pair
+// NewVWAPUtil initializes a new VWAPUtil for a trading pair
 func NewVWAPUtil(window int, pair string) *VWAPUtil {
 	// window represents maximum number of data points to slide
 	return &VWAPUtil{
@@ -38,6 +38,7 @@ func NewVWAPUtil(window int, pair string) *VWAPUtil {
 	}
 }
 
+// removeLast - removes last trade from slide window
 func (ag *VWAPUtil) removeLast() {
 	// subtract volume of oldest data point
 	ag.cumulatedVolume -= ag.volumes[0]
@@ -45,14 +46,17 @@ func (ag *VWAPUtil) removeLast() {
 
 	// check if maximum price is price we are about to delete
 	if ag.maxPrice == ag.prices[0] {
+		// find next max price
 		ag.maxPrice = helpers.GetMaxFloat(ag.prices[1:])
 	}
 
 	// check if minimum price is price we are about to delete
 	if ag.minPrice == ag.prices[0] {
+		// find next min price
 		ag.minPrice = helpers.GetMinFloat(ag.prices[1:])
 	}
 
+	// remove oldest price
 	ag.prices = ag.prices[1:]
 }
 
@@ -94,5 +98,5 @@ func (ag *VWAPUtil) GetVWAP() float64 {
 
 // ToString - output as string
 func (ag *VWAPUtil) ToString() string {
-	return fmt.Sprintf("Trading Pair: %s, VWAP: %f", ag.Pair, ag.GetVWAP())
+	return fmt.Sprintf("Trading Pair for the latest %d trades: %s, VWAP: %f", len(ag.prices), ag.Pair, ag.GetVWAP())
 }
