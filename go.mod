@@ -1,4 +1,4 @@
-module assignment
+module CoinbaseMatchesVWAP
 
 go 1.17.3
 
