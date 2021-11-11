@@ -150,7 +150,7 @@ func TestVWAPUtil_GetVWAP(t *testing.T) {
 
 // TestVWAPUtil_ToString - tests ToString method of VWAPUtil
 func TestVWAPUtil_ToString(t *testing.T) {
-	expected := `Trading Pair: BTC-USD, VWAP: 3.373333`
+	expected := `Trading Pair for the latest 5 trades: BTC-USD, VWAP: 3.373333`
 	// there are 5 trades in util by default
 	util := CreateVWAPUtil(5)
 

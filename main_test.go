@@ -43,9 +43,9 @@ func TestValidateConfig_Invalid(t *testing.T) {
 
 // TestStartRead - tests startRead function
 func TestStartRead(t *testing.T) {
-	expected := `Trading Pair: BTC-USD, VWAP: 64632.950000
-Trading Pair: ETH-USD, VWAP: NaN
-Trading Pair: ETH-BTC, VWAP: NaN`
+	expected := `Trading Pair for the latest 1 trades: BTC-USD, VWAP: 64632.950000
+Trading Pair for the latest 0 trades: ETH-USD, VWAP: NaN
+Trading Pair for the latest 0 trades: ETH-BTC, VWAP: NaN`
 	read := make(chan []byte)
 	aggregator := utils.NewAggregator(config)
 	done := make(chan struct{})
@@ -66,9 +66,9 @@ Trading Pair: ETH-BTC, VWAP: NaN`
 // TestStartRead_InvalidDataPoint - tests startRead function
 // Invalid data point message is sent to read channel
 func TestStartRead_InvalidDataPoint(t *testing.T) {
-	expected := `Trading Pair: BTC-USD, VWAP: NaN
-Trading Pair: ETH-USD, VWAP: NaN
-Trading Pair: ETH-BTC, VWAP: NaN`
+	expected := `Trading Pair for the latest 0 trades: BTC-USD, VWAP: NaN
+Trading Pair for the latest 0 trades: ETH-USD, VWAP: NaN
+Trading Pair for the latest 0 trades: ETH-BTC, VWAP: NaN`
 	read := make(chan []byte)
 	aggregator := utils.NewAggregator(config)
 	done := make(chan struct{})

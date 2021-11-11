@@ -44,9 +44,9 @@ func TestNewAggregator_NoPairs(t *testing.T) {
 
 // TestAggregator_ToString - tests ToString method of Aggregator
 func TestAggregator_ToString(t *testing.T) {
-	expectedValue := `Trading Pair: BTC-USD, VWAP: 1.000000
-Trading Pair: ETH-USD, VWAP: 2.000000
-Trading Pair: ETH-BTC, VWAP: 2.000000`
+	expectedValue := `Trading Pair for the latest 1 trades: BTC-USD, VWAP: 1.000000
+Trading Pair for the latest 1 trades: ETH-USD, VWAP: 2.000000
+Trading Pair for the latest 1 trades: ETH-BTC, VWAP: 2.000000`
 	// initialize a new aggregator with 3 trade pairs
 	pairs := []string{"BTC-USD", "ETH-USD", "ETH-BTC"}
 	config := model.Config{
