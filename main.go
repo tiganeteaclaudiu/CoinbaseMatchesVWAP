@@ -1,10 +1,10 @@
 package main
 
 import (
-	"assignment/helpers"
-	"assignment/model"
-	"assignment/utils"
-	"assignment/websocketClient"
+	"CoinbaseMatchesVWAP/helpers"
+	"CoinbaseMatchesVWAP/model"
+	"CoinbaseMatchesVWAP/utils"
+	"CoinbaseMatchesVWAP/websocketClient"
 	"encoding/json"
 	"errors"
 	"flag"

@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"assignment/helpers"
+	"CoinbaseMatchesVWAP/helpers"
 	"fmt"
 	"math"
 )

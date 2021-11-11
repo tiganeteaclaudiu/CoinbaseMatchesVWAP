@@ -1,8 +1,8 @@
 package main
 
 import (
-	"assignment/model"
-	"assignment/utils"
+	"CoinbaseMatchesVWAP/model"
+	"CoinbaseMatchesVWAP/utils"
 	"testing"
 	"time"
 )

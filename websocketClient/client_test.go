@@ -1,7 +1,7 @@
 package websocketClient
 
 import (
-	"assignment/helpers"
+	"CoinbaseMatchesVWAP/helpers"
 	"fmt"
 	"net/http"
 	"testing"
