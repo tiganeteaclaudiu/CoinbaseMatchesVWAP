@@ -17,7 +17,8 @@ The application is configurable using the `conf.json` file in the root directory
 ### Compilation and Execution:
 
 - Configure application via `conf.json` (default configuration is fine)
-- `go build`
+- Vendor dependencies: `go mod vendor` 
+- Build executable: `go build`
 - Run executable:
   
 Windows: `CoinbaseMatchesVWAP.exe`
